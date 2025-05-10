@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Impostore Online</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #2c3e50; /* Sfondo scuro */
+            color: #ecf0f1; /* Testo chiaro */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: #34495e; /* Contenitore leggermente più chiaro */
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #e74c3c; /* Rosso Impostore */
+            margin-bottom: 10px;
+        }
+        h1 .online-tag {
+            font-size: 0.6em;
+            color: #3498db; /* Blu per tag "Online" */
+        }
+        h2.sub-title {
+            color: #f1c40f; /* Giallo per sottotitoli */
+            margin-bottom: 20px;
+            border-bottom: 1px solid #4a6280;
+            padding-bottom: 10px;
+        }
+
+        .screen {
+            display: none; /* Nascosto di default */
+            padding: 15px;
+            /* border: 1px solid #4a6280; Eliminiamo il bordo per un look più pulito */
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        .screen.active {
+            display: block;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #bdc3c7; /* Grigio chiaro per label */
+            text-align: left;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="password"] { /* Aggiunto tipo password */
+            width: calc(100% - 24px); /* Considera padding e border */
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #7f8c8d;
+            border-radius: 5px;
+            background-color: #ecf0f1;
+            color: #2c3e50; /* Testo scuro su input chiaro */
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #e74c3c; /* Rosso Impostore per bottoni primari */
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            margin-top: 10px;
+            margin-right: 8px;
+        }
+        button:hover {
+            background-color: #c0392b;
+            transform: translateY(-1px);
+        }
+        button.secondary {
+            background-color: #3498db; /* Blu per secondari */
+        }
+        button.secondary:hover {
+            background-color: #2980b9;
+        }
+        button.action { /* Per azioni di gioco importanti */
+            background-color: #2ecc71; /* Verde */
+        }
+        button.action:hover {
+            background-color: #27ae60;
+        }
+        button:disabled {
+            background-color: #7f8c8d; /* Grigio per disabilitati */
+            cursor: not-allowed;
+            transform: none;
+        }
+        button.link-button { /* Per bottoni che sembrano link */
+            background: none;
+            color: #3498db;
+            padding: 5px;
+            text-decoration: underline;
+            margin-top: 5px;
+        }
+        button.link-button:hover {
+            color: #2980b9;
+            background: none;
+        }
+
+
+        .error-message {
+            color: #e74c3c;
+            background-color: rgba(231, 76, 60, 0.1);
+            border: 1px solid #e74c3c;
+            padding: 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            margin-top: 5px;
+            text-align: left;
+        }
+
+        #playerListContainer, #gameLogContainer, #lobbyPlayerListContainer {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #2c3e50; /* Sfondo leggermente più scuro del container */
+            border-radius: 8px;
+            text-align: left;
+        }
+        #playerListContainer h3, #gameLogContainer h3, #lobbyPlayerListContainer h3 {
+            margin-top: 0;
+            color: #f1c40f;
+            border-bottom: 1px solid #4a6280;
+            padding-bottom: 5px;
+        }
+
+        #gameLog {
+            max-height: 150px;
+            overflow-y: auto;
+            background-color: #1f2b38; /* Molto scuro per log */
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        #gameLog p {
+            margin: 3px 0;
+            padding-bottom: 3px;
+            border-bottom: 1px dotted #34495e;
+        }
+        #gameLog p:last-child {
+            border-bottom: none;
+        }
+
+        #playerList div, #lobbyPlayerList div {
+            padding: 8px;
+            border-bottom: 1px solid #4a6280;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #playerList div:last-child, #lobbyPlayerList div:last-child {
+            border-bottom: none;
+        }
+        #playerList div.me, #lobbyPlayerList div.me {
+            font-weight: bold;
+            background-color: rgba(26, 188, 156, 0.1); /* Sfondo leggero per "me" */
+            color: #1abc9c; /* Verde acqua per "me" */
+        }
+        #playerList div.host, #lobbyPlayerList div.host {
+            color: #f1c40f; /* Giallo per "Host" */
+        }
+        .player-status-indicator {
+            font-size: 0.8em;
+            color: #bdc3c7;
+        }
+
+
+        /* Stili per messaggi specifici */
+        #roleRevealScreenMessage, #resultScreenMessage, #waitingMessage, #impostorGuessMessage, #lobbyMessageContainer {
+            padding: 20px;
+            border: 2px dashed #f1c40f;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #2c3e50; /* Sfondo scuro interno */
+        }
+        #resultScreenMessage { font-size: 1.1em; }
+        #lobbyMessageContainer { border-style: solid; }
+
+        hr {
+            border: none;
+            border-top: 1px solid #4a6280;
+            margin: 25px 0;
+        }
+
+        ul#discussionCluesList { /* Lista indizi discussione */
+            list-style-type: none;
+            padding: 0;
+            text-align: left;
+        }
+        ul#discussionCluesList li, ul#cluesList li {
+            background-color: #2c3e50;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            color: #ecf0f1;
+            border-left: 3px solid #f1c40f;
+        }
+        ul#cluesList h3 { /* Titolo per la lista indizi DENTRO la schermata clue */
+            color: #f1c40f;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>L'Impostore <span class="online-tag">(Online)</span></h1>
+        <div id="playerNameDisplay" style="margin-bottom: 15px; font-weight: bold; color: #1abc9c; min-height: 1.2em;"></div>
+
+        <!-- Schermata Inserimento Room Password (Default) -->
+        <div id="roomPasswordScreen" class="screen active"> <!-- Inizia attivo -->
+            <h2 class="sub-title">Unisciti a una Partita</h2>
+            <label for="playerNameInput">Il tuo Nome:</label>
+            <input type="text" id="playerNameInput" placeholder="Es: Mario">
+            <label for="roomPasswordInput">Password della Stanza:</label>
+            <input type="text" id="roomPasswordInput" placeholder="Chiedi all'host">
+            <div id="roomPasswordError" class="error-message" style="display: none;"></div>
+            <button id="joinRoomButton" class="action">Unisciti!</button>
+            <hr>
+            <p style="color: #bdc3c7;">Sei l'host?</p>
+            <button onclick="showScreen('setupScreen')" class="secondary">Crea una Nuova Partita</button>
+        </div>
+
+        <!-- Schermata di Setup (per l'Host) -->
+        <div id="setupScreen" class="screen">
+            <h2 class="sub-title">Crea Nuova Partita (Host)</h2>
+            <label for="numPlayers">Numero di Giocatori (min 3):</label>
+            <input type="number" id="numPlayers" min="3" value="3">
+            <label for="secretWord">Parola Segreta del Gioco:</label>
+            <input type="text" id="secretWord" placeholder="Es: Animali della fattoria">
+            <label for="hostRoomPasswordInput">Crea una Password per questa Stanza:</label>
+            <input type="text" id="hostRoomPasswordInput" placeholder="Es: impostore123">
+            <div id="setupError" class="error-message" style="display: none;"></div>
+            <button id="startGameButton" class="action">Crea Stanza e Procedi</button>
+            <button onclick="showScreen('roomPasswordScreen')" class="link-button">Annulla e Unisciti a una Stanza Esistente</button>
+        </div>
+
+        <!-- Schermata Lobby -->
+        <div id="lobbyScreen" class="screen">
+            <h2 class="sub-title">Lobby</h2>
+            <div id="lobbyMessageContainer">
+                <p id="lobbyMessage">In attesa di giocatori...</p>
+            </div>
+            <div id="lobbyPlayerListContainer">
+                <h3>Giocatori nella Lobby:</h3>
+                <div id="lobbyPlayerList">
+                    <!-- Lista giocatori nella lobby popolata da JS -->
+                </div>
+            </div>
+            <button id="hostStartGameLobbyButton" class="action" style="display: none;" disabled>Avvia Partita (Host)</button>
+        </div>
+        
+        <!-- Schermata Messaggio di Attesa Generico -->
+        <div id="waitingMessageScreen" class="screen">
+            <h2 class="sub-title">Attendere...</h2>
+            <div id="waitingMessage">
+                <p>Connessione o caricamento in corso...</p>
+            </div>
+        </div>
+
+        <!-- Schermata Rivelazione Ruolo -->
+        <div id="roleRevealScreen" class="screen">
+            <h2 class="sub-title">Il tuo Ruolo!</h2>
+            <div id="roleRevealScreenMessage">
+                <p id="roleText"></p>
+                <p id="secretWordTextRole"></p>
+            </div>
+            <button id="seenRoleButton" class="action">Ho capito!</button>
+        </div>
+
+        <!-- Schermata Inserimento Indizi -->
+        <div id="clueScreen" class="screen">
+            <h2 class="sub-title" id="clueTurnTitle"></h2>
+            <label for="clueInput">Il tuo indizio (una parola):</label>
+            <input type="text" id="clueInput" placeholder="Una sola parola collegata">
+            <div id="clueError" class="error-message" style="display: none;"></div>
+            <button id="submitClueButton" class="action">Invia Indizio</button>
+            <hr>
+            <ul id="cluesList"> <!-- Mostra indizi dati finora -->
+                <!-- Gli indizi verranno popolati da JS qui -->
+            </ul>
+        </div>
+
+        <!-- Schermata Visualizzazione Indizi e Discussione -->
+        <div id="discussionScreen" class="screen">
+            <h2 class="sub-title">Indizi Forniti (Discutete!):</h2>
+            <ul id="discussionCluesList">
+                 <!-- Gli indizi verranno inseriti qui da JS -->
+            </ul>
+            <button id="startVotingButton" class="action" style="display: none;">Procedi alla Votazione (Host)</button>
+        </div>
+
+        <!-- Schermata Votazione -->
+        <div id="votingScreen" class="screen">
+            <h2 class="sub-title" id="votingTitle">Votazione: Chi è l'Impostore?</h2>
+            <p id="voterNameText" style="min-height: 1.2em; color: #bdc3c7;"></p>
+            <div id="voteButtonsContainer" style="margin-top:10px;">
+                <!-- I bottoni per votare verranno inseriti qui da JS -->
+            </div>
+            <div id="voteError" class="error-message" style="display: none;"></div>
+        </div>
+        
+        <!-- Schermata Tentativo Impostore -->
+        <div id="impostorGuessScreen" class="screen">
+            <h2 class="sub-title">Impostore Scoperto!</h2>
+            <div id="impostorGuessMessage">
+                <p>L'impostore (<span id="caughtImpostorName" style="color: #e74c3c; font-weight:bold;"></span>) è stato identificato!</p>
+                <p>Ora hai una possibilità di vincere indovinando la parola segreta.</p>
+            </div>
+            <label for="impostorGuessInput">La tua ipotesi sulla parola segreta:</label>
+            <input type="text" id="impostorGuessInput" placeholder="Qual era la parola?">
+            <div id="impostorGuessError" class="error-message" style="display: none;"></div>
+            <button id="checkImpostorGuessButton" class="action">Conferma Ipotesi</button>
+        </div>
+
+        <!-- Schermata Risultati -->
+        <div id="resultScreen" class="screen">
+            <h2 class="sub-title">Risultato Finale</h2>
+            <div id="resultScreenMessage">
+                <!-- Il messaggio di risultato verrà inserito qui da JS -->
+            </div>
+            <p>La parola segreta era: <strong id="finalSecretWord" style="color: #1abc9c;"></strong></p>
+            <p>L'Impostore era: <strong id="finalImpostorName" style="color: #e74c3c;"></strong></p>
+            <button id="resetGameButton" class="secondary" style="display: none;">Resetta Partita (Host)</button>
+        </div>
+
+        <!-- Contenitore per la Lista Giocatori (generale, visibile in più fasi) -->
+        <div id="playerListContainer" style="margin-top:25px;">
+            <h3>Giocatori Attuali nella Stanza:</h3>
+            <div id="playerList">
+                 <!-- La lista dei giocatori verrà popolata da JS -->
+            </div>
+        </div>
+        
+        <!-- Contenitore per i Log di Gioco -->
+        <div id="gameLogContainer" style="margin-top: 15px;">
+            <h3>Log di Gioco:</h3>
+            <div id="gameLog">
+                 <!-- I messaggi di log verranno inseriti qui da JS -->
+            </div>
+        </div>
+
+    </div>
+    <script src="client.js"></script> <!-- Il tuo file JavaScript -->
+</body>
+</html>
