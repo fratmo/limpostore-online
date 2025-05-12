@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Impostore Online</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        :root {
+            --bg-dark: #1e1e2f;
+            --primary: #ffcc00;
+            --secondary: #00bcd4;
+            --text-main: #ffffff;
+            --text-secondary: #cccccc;
+            --button-radius: 12px;
+            --shadow: 0 4px 24px rgba(0,0,0,0.25);
+            --transition: 0.2s cubic-bezier(.4,0,.2,1);
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            min-height: 100vh;
+            background: var(--bg-dark) url('images/sfondo_impostore.png') center center no-repeat;
+            background-size: cover;
+            color: var(--text-main);
+            font-family: 'Montserrat', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            animation: fadeIn 1.2s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .container {
+            background: rgba(34,34,54,0.92);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            padding: 36px 32px 28px 32px;
+            margin-top: 32px;
+            width: 100%;
+            max-width: 420px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            animation: fadeIn 1.2s;
+        }
+        #mainLogoContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        #mainLogo {
+            width: 90px;
+            height: auto;
+            margin-bottom: 8px;
+        }
+        .brand-title {
+            font-size: 2.1em;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 1px;
+            text-align: center;
+        }
+        .online-tag {
+            font-size: 0.5em;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-left: 6px;
+        }
+        .avatar-placeholder {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #23234a 60%, #2e2e5a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary);
+            font-size: 2.2em;
+            margin: 0 auto 18px auto;
+            border: 2px dashed var(--secondary);
+        }
+        .quote-bar {
+            width: 100%;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.05em;
+            font-style: italic;
+            margin-bottom: 18px;
+            margin-top: 6px;
+            letter-spacing: 0.2px;
+            min-height: 1.5em;
+        }
+        h2.sub-title {
+            color: var(--primary);
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 18px;
+            margin-top: 0;
+            letter-spacing: 0.5px;
+        }
+        label {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-top: 16px;
+            margin-bottom: 6px;
+            font-size: 1em;
+            text-align: left;
+            width: 100%;
+        }
+        input[type="text"], input[type="number"], input[type="password"] {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: var(--button-radius);
+            border: 1.5px solid var(--secondary);
+            background: #23234a;
+            color: var(--text-main);
+            font-size: 1em;
+            margin-bottom: 14px;
+            transition: border-color var(--transition), box-shadow var(--transition);
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px var(--primary)33;
+        }
+        .welcome-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            margin: 28px 0 0 0;
+        }
+        button {
+            width: 100%;
+            padding: 15px 0;
+            font-size: 1.15em;
+            font-weight: 700;
+            border: none;
+            border-radius: var(--button-radius);
+            background: var(--primary);
+            color: #1e1e2f;
+            margin: 0 auto;
+            margin-bottom: 6px;
+            box-shadow: 0 2px 8px #0002;
+            cursor: pointer;
+            transition: 
+                background var(--transition),
+                color var(--transition),
+                transform var(--transition),
+                box-shadow var(--transition);
+        }
+        button.secondary {
+            background: var(--secondary);
+            color: #fff;
+        }
+        button.action {
+            background: linear-gradient(90deg, var(--secondary) 60%, var(--primary) 100%);
+            color: #1e1e2f;
+        }
+        button:active {
+            transform: scale(0.97);
+        }
+        button:hover, button:focus-visible {
+            background: #ffe066;
+            color: #1e1e2f;
+            transform: scale(1.04);
+            box-shadow: 0 4px 18px #0003;
+        }
+        button.secondary:hover, button.secondary:focus-visible {
+            background: #00e0ff;
+            color: #1e1e2f;
+        }
+        button.action:hover, button.action:focus-visible {
+            background: linear-gradient(90deg, #00e0ff 60%, #ffe066 100%);
+            color: #1e1e2f;
+        }
+        .error-message {
+            background: #ffcc0033;
+            color: #ffcc00;
+            border: 1px solid #ffcc00;
+            border-radius: var(--button-radius);
+            padding: 10px 14px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 1em;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 18px 6vw 18px 6vw;
+                margin-top: 10px;
+                max-width: 98vw;
+            }
+            .welcome-buttons {
+                gap: 10px;
+            }
+            button {
+                font-size: 1em;
+                padding: 13px 0;
+            }
+            .brand-title {
+                font-size: 1.3em;
+            }
+            h2.sub-title {
+                font-size: 1.1em;
+            }
+        }
+        .screen {
+            display: none;
+        }
+        .screen.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="mainLogoContainer">
+            <img src="images/logoimpostore.png" alt="Logo L'Impostore" id="mainLogo">
+            <div class="brand-title">
+                L'Impostore <span class="online-tag">(Online)</span>
+            </div>
+        </div>
+        <div class="quote-bar" id="quoteBar"></div>
+        <!-- Placeholder avatar per futuri sviluppi -->
+        <div class="avatar-placeholder" title="Avatar personalizzabile in arrivo!">👤</div>
+        <div id="playerNameDisplay" style="margin-bottom: 15px; font-weight: bold; color: #00bcd4; min-height: 1.2em;"></div>
+        
+        <!-- SOLO la schermata di benvenuto è visibile all'avvio -->
+        <div id="welcomeScreen" class="screen active">
+            <div class="welcome-screen">
+                <h2 class="sub-title">Benvenuto a L'Impostore!</h2>
+                <div class="welcome-buttons">
+                    <button onclick="playClick();showScreen('setupScreen')" class="primary">Crea Nuova Partita (Host)</button>
+                    <button onclick="playClick();showScreen('roomPasswordScreen')" class="secondary">Unisciti a una Partita</button>
+                    <button onclick="playClick();showScreen('rulesModal')" class="action">📖 Regole del Gioco</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tutte le altre schermate sono FUORI dal welcomeScreen e hanno solo class="screen" -->
+        <!-- Schermata Inserimento Room Password -->
+        <div id="roomPasswordScreen" class="screen">
+            <h2 class="sub-title">Unisciti a una Partita</h2>
+            <label for="playerNameInput">Il tuo Nome:</label>
+            <input type="text" id="playerNameInput" placeholder="Es: Mario">
+            <label for="roomPasswordInput">Password della Stanza:</label>
+            <input type="text" id="roomPasswordInput" placeholder="Chiedi all'host">
+            <div id="roomPasswordError" class="error-message" style="display: none;"></div>
+            <button id="joinRoomButton" class="action">Unisciti!</button>
+            <hr>
+            <p style="color: var(--text-light-secondary);">Sei l'host?</p>
+            <button onclick="playClick();showScreen('setupScreen')" class="secondary">Crea una Nuova Partita</button>
+            <button onclick="playClick();showScreen('welcomeScreen')" class="secondary">Torna al Menu</button>
+        </div>
+        <!-- Schermata di Setup (per l'Host) -->
+        <div id="setupScreen" class="screen">
+            <h2 class="sub-title">Crea Nuova Partita (Host)</h2>
+            <label for="numPlayers">Numero di Giocatori (min 3):</label>
+            <input type="number" id="numPlayers" min="3" value="3">
+            <label for="secretWord">Parola Segreta del Gioco:</label>
+            <input type="text" id="secretWord" placeholder="Es: Animali della fattoria">
+            <label for="hostRoomPasswordInput">Crea una Password per questa Stanza:</label>
+            <input type="text" id="hostRoomPasswordInput" placeholder="Es: impostore123">
+            <div id="setupError" class="error-message" style="display: none;"></div>
+            <button id="startGameButton" class="action">Crea Stanza e Procedi</button>
+            <button onclick="playClick();showScreen('welcomeScreen')" class="secondary">Torna al Menu</button>
+        </div>
+        <!-- Modal delle Regole -->
+        <div id="rulesModal" class="screen">
+            <div class="modal-content">
+                <button class="modal-close" onclick="hideRules()">&times;</button>
+                <div class="rules-content">
+                    <h2 class="sub-title">Regole del Gioco</h2>
+                    <p><span class="emoji">🕵️‍♂️</span> L'Impostore</p>
+                    <p><span class="emoji">🎭</span> Uno di voi è un impostore. Gli altri conoscono la parola segreta, lui no.</p>
+                    <p><span class="emoji">🔍</span> A turno, ognuno dice una parola-indizio collegata alla parola segreta.</p>
+                    <p><span class="emoji">😶</span> L'Impostore dovrà inventare un indizio credibile… senza sapere la parola!</p>
+                    <p><span class="emoji">💥</span> Alla fine, tutti discutono e si vota: chi è l'impostore?</p>
+                    <p><span class="emoji">🎯</span> Se lo scoprite, può ancora salvarsi… indovinando la parola segreta!</p>
+                    <p><span class="emoji">🧠</span> Se non lo scoprite, o se la indovina, vince lui.</p>
+                    <div class="warning">
+                        <p><span class="emoji">⚠️</span> Attento agli indizi:</p>
+                        <p>Troppo precisi? Aiuti l'Impostore.</p>
+                        <p>Troppo vaghi? Sembri tu l'Impostore.</p>
+                    </div>
+                </div>
+                <button onclick="playClick();showScreen('welcomeScreen')" class="secondary">Torna al Menu</button>
+            </div>
+        </div>
+        <!-- Schermata Lobby -->
+        <div id="lobbyScreen" class="screen">
+            <h2 class="sub-title">Lobby</h2>
+            <div id="lobbyMessageContainer">
+                <p id="lobbyMessage">In attesa di giocatori...</p>
+            </div>
+            <div id="lobbyPlayerListContainer">
+                <h3>Giocatori nella Lobby:</h3>
+                <div id="lobbyPlayerList">
+                    <!-- Lista giocatori nella lobby popolata da JS -->
+                </div>
+            </div>
+            <button id="hostStartGameLobbyButton" class="action" style="display: none;" disabled>Avvia Partita (Host)</button>
+        </div>
+        <!-- Schermata Messaggio di Attesa Generico -->
+        <div id="waitingMessageScreen" class="screen">
+            <h2 class="sub-title">Attendere...</h2>
+            <div id="waitingMessage">
+                <p>Connessione o caricamento in corso...</p>
+            </div>
+        </div>
+        <!-- Schermata Rivelazione Ruolo -->
+        <div id="roleRevealScreen" class="screen">
+            <h2 class="sub-title">Il tuo Ruolo!</h2>
+            <div id="roleRevealScreenMessage">
+                <p id="roleText"></p> <!-- La classe .onesto o .impostore verrà aggiunta da JS -->
+                <p id="secretWordTextRole"></p>
+            </div>
+            <button id="seenRoleButton" class="action">Ho capito!</button>
+        </div>
+        <!-- Schermata Inserimento Indizi -->
+        <div id="clueScreen" class="screen">
+            <h2 class="sub-title" id="clueTurnTitle"></h2>
+            <label for="clueInput">Il tuo indizio (una parola):</label>
+            <input type="text" id="clueInput" placeholder="Una sola parola collegata">
+            <div id="clueError" class="error-message" style="display: none;"></div>
+            <button id="submitClueButton" class="action">Invia Indizio</button>
+            <hr>
+            <ul id="cluesList"> <!-- Mostra indizi dati finora -->
+                 <!-- h3 e li verranno popolati da JS -->
+            </ul>
+        </div>
+        <!-- Schermata Visualizzazione Indizi e Discussione -->
+        <div id="discussionScreen" class="screen">
+            <h2 class="sub-title">Indizi Forniti (Discutete!):</h2>
+            <ul id="discussionCluesList">
+                 <!-- Gli indizi verranno inseriti qui da JS -->
+            </ul>
+            <button id="startVotingButton" class="action" style="display: none;">Procedi alla Votazione (Host)</button>
+        </div>
+        <!-- Schermata Votazione -->
+        <div id="votingScreen" class="screen">
+            <h2 class="sub-title" id="votingTitle">Votazione: Chi è l'Impostore?</h2>
+            <p id="voterNameText" style="min-height: 1.2em; color: var(--text-light-secondary);"></p>
+            <div id="voteButtonsContainer" style="margin-top:10px;">
+                <!-- I bottoni per votare verranno inseriti qui da JS -->
+            </div>
+            <div id="voteError" class="error-message" style="display: none;"></div>
+        </div>
+        <!-- Schermata Tentativo Impostore -->
+        <div id="impostorGuessScreen" class="screen">
+            <h2 class="sub-title">Impostore Scoperto!</h2>
+            <div id="impostorGuessMessage">
+                <p>L'impostore (<span id="caughtImpostorName" style="color: var(--accent-red); font-weight:bold;"></span>) è stato identificato!</p>
+                <p>Ora hai una possibilità di vincere indovinando la parola segreta.</p>
+            </div>
+            <label for="impostorGuessInput">La tua ipotesi sulla parola segreta:</label>
+            <input type="text" id="impostorGuessInput" placeholder="Qual era la parola?">
+            <div id="impostorGuessError" class="error-message" style="display: none;"></div>
+            <button id="checkImpostorGuessButton" class="action">Conferma Ipotesi</button>
+        </div>
+        <!-- Schermata Risultati -->
+        <div id="resultScreen" class="screen">
+            <h2 class="sub-title">Risultato Finale</h2>
+            <div id="resultScreenMessage">
+                <!-- Il messaggio di risultato verrà inserito qui da JS -->
+            </div>
+            <p>La parola segreta era: <strong id="finalSecretWord" style="color: var(--accent-green);"></strong></p>
+            <p>L'Impostore era: <strong id="finalImpostorName" style="color: var(--accent-red);"></strong></p>
+            <button id="resetGameButton" class="secondary" style="display: none;">Resetta Partita (Host)</button>
+        </div>
+        <!-- Contenitore per la Lista Giocatori (generale, visibile in più fasi) -->
+        <div id="playerListContainer" style="margin-top:25px;">
+            <h3>Giocatori Attuali nella Stanza:</h3>
+            <div id="playerList">
+                 <!-- La lista dei giocatori verrà popolata da JS -->
+            </div>
+        </div>
+    </div>
+    <!-- Effetto sonoro base -->
+    <audio id="buttonSound" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae0b6.mp3" preload="auto"></audio>
+    <script>
+        // Citazioni casuali
+        const quotes = [
+            "Chi mente oggi... domani conduce.",
+            "La verità è figlia del tempo.",
+            "Fidarsi è bene, non fidarsi è meglio.",
+            "L'apparenza inganna, l'impostore pure.",
+            "Un buon indizio vale più di mille parole.",
+            "Chi tace acconsente... o nasconde qualcosa?"
+        ];
+        function randomQuote() {
+            const q = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('quoteBar').textContent = q;
+        }
+        randomQuote();
+
+        // Effetto sonoro sui pulsanti
+        function playClick() {
+            const audio = document.getElementById('buttonSound');
+            if (audio) {
+                audio.currentTime = 0;
+                audio.play();
+            }
+        }
+
+        // Funzione showScreen (deve essere già presente nel tuo JS)
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            const el = document.getElementById(screenId);
+            if (el) el.classList.add('active');
+        }
+        // Funzione showRules (deve essere già presente nel tuo JS)
+        function showRules() {
+            alert("Qui compariranno le regole del gioco! (Integra la tua modal come già presente nel progetto)");
+        }
+    </script>
+</body>
+</html>
